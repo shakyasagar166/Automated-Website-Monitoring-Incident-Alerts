@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: monitoring-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEFAULT_API_KEY=monitoring-secret-key-2026
+      - DATABASE_URL=sqlite:///./monitoring.db
+      - MOCK_LLM_MODE=true
+      - MOCK_PROBE_MODE=true
+    volumes:
+      - ../backend/monitoring.db:/app/monitoring.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: monitoring-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

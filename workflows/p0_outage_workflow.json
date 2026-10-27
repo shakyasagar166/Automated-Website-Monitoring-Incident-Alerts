@@ -1,0 +1,33 @@
+{
+  "name": "P0 Critical Outage Auto-Triage & Escalation",
+  "version": "1.0.0",
+  "trigger": "consecutive_failures_gte_2",
+  "severity": "P0",
+  "steps": [
+    {
+      "step": 1,
+      "action": "run_multi_region_synthetic_probe",
+      "regions": ["us-east-1", "eu-central-1", "ap-south-1"]
+    },
+    {
+      "step": 2,
+      "agent": "IncidentTriageAgent",
+      "action": "classify_severity"
+    },
+    {
+      "step": 3,
+      "agent": "RootCauseAgent",
+      "action": "diagnose_error_headers"
+    },
+    {
+      "step": 4,
+      "action": "dispatch_oncall_page",
+      "channels": ["SLACK", "PAGERDUTY", "EMAIL"]
+    },
+    {
+      "step": 5,
+      "agent": "RemediationAgent",
+      "action": "publish_runbook_mitigation_plan"
+    }
+  ]
+}

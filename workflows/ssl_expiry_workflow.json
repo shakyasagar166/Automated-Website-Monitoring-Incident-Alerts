@@ -1,0 +1,22 @@
+{
+  "name": "SSL / TLS Certificate Expiry Auto-Alert",
+  "version": "1.0.0",
+  "trigger": "ssl_days_remaining_lte_30",
+  "severity": "P3",
+  "actions": [
+    {
+      "step": 1,
+      "action": "check_acme_renewal_daemon"
+    },
+    {
+      "step": 2,
+      "action": "send_email_notification",
+      "target": "security-ops@enterprise-cloud.io"
+    },
+    {
+      "step": 3,
+      "action": "post_slack_warning",
+      "channel": "#security-compliance"
+    }
+  ]
+}

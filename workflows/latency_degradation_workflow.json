@@ -1,0 +1,23 @@
+{
+  "name": "High Latency & Performance Degradation Workflow",
+  "version": "1.0.0",
+  "trigger": "response_time_ms_gte_1500",
+  "severity": "P2",
+  "actions": [
+    {
+      "step": 1,
+      "action": "trigger_trace_profile",
+      "metric": "p99_latency"
+    },
+    {
+      "step": 2,
+      "agent": "RootCauseAgent",
+      "action": "check_database_locks_and_memory_pressure"
+    },
+    {
+      "step": 3,
+      "action": "post_slack_warning",
+      "channel": "#latency-alerts"
+    }
+  ]
+}
